@@ -34,8 +34,13 @@ class AmpMatchComposer
     public function compose(View $view)
     {
         $currentRoute = $this->router->getCurrentRoute();
-        $routeName = $currentRoute->getName();
 
+        if (!$currentRoute) {
+            $view->with('hasAmpUrl', false);
+            return;
+        }
+
+        $routeName = $currentRoute->getName();
         $matches = preg_match('/\.amp$/', $routeName);
 
         if ($matches === 0) {
