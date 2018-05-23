@@ -73,8 +73,6 @@ class AmpViewFactory extends Factory implements FactoryContract
             if (isset($this->ampBoolName)) {
                 $data[$this->ampBoolName] = true;
             }
-        } elseif (isset($this->ampBoolName)) {
-            $data[$this->ampBoolName] = false;
         }
 
         return parent::make($view, $data, $mergeData);
