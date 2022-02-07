@@ -1,17 +1,16 @@
 <?php
 
 return [
-
-    'prefix' => 'gm',
-
-    // (optional)
-    'view-affix' => '-amp',
+    'prefix' => 'amp',
 
     // (optional)
-    'view-bool-name' => 'hasAmpUrl',
+    'view_affix' => '.amp',
+
+    // (optional)
+    'view_bool_name' => 'hasAmpUrl',
 
     // Use non-amp view if affixed view does not exists.
-    'view-fallback' => false,
+    'view_fallback' => false,
 
     'layouts' => [
         'amp::tag'

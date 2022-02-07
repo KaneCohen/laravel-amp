@@ -1,8 +1,6 @@
 <?php
+namespace Cohensive\Amp;
 
-namespace Just\Amp\Laravel;
-
-use Just\Amp;
 use Illuminate\Support\ServiceProvider;
 
 class AmpServiceProvider extends ServiceProvider
@@ -12,16 +10,16 @@ class AmpServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->loadViewsFrom(__DIR__.'/../../resources/views', 'amp');
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'amp');
 
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__.'/../../config/amp.php' => config_path('amp.php'),
+                __DIR__.'/../config/amp.php' => $this->app->configPath('amp.php'),
             ], 'config');
 
 
             $this->publishes([
-                __DIR__.'/../../resources/views' => base_path('resources/views/vendor/amp'),
+                __DIR__.'/../resources/views' => $this->app->basePath('resources/views/vendor/amp'),
             ], 'views');
         }
     }
@@ -31,17 +29,14 @@ class AmpServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__.'/../../config/amp.php', 'amp');
+        $this->mergeConfigFrom(__DIR__.'/../config/amp.php', 'amp');
 
-        $this->app->singleton('amprouter', Amp\Laravel\AmpRouter::class);
+        $this->app->singleton('amprouter', AmpRouter::class);
 
         $this->registerAmpViewFactory();
         $this->registerAmpViewComposer();
     }
 
-    /**
-     *
-     */
     private function registerAmpViewFactory()
     {
         $this->app->singleton('view', function ($app) {
@@ -56,9 +51,9 @@ class AmpServiceProvider extends ServiceProvider
                 $resolver,
                 $finder,
                 $app['events'],
-                $app['config']->get('amp.view-affix'),
-                $app['config']->get('amp.view-bool-name'),
-                $app['config']->get('amp.view-fallback')
+                $app['config']->get('amp.view_affix'),
+                $app['config']->get('amp.view_bool_name'),
+                $app['config']->get('amp.view_fallback')
             );
 
             // We will also set the container instance on this view environment since the
@@ -72,14 +67,11 @@ class AmpServiceProvider extends ServiceProvider
         });
     }
 
-    /**
-     *
-     */
     private function registerAmpViewComposer()
     {
         $this->app['view']->composer(
             $this->app['config']->get('amp.layouts', []),
-            Amp\Laravel\AmpMatchComposer::class
+            AmpMatchComposer::class
         );
     }
 }

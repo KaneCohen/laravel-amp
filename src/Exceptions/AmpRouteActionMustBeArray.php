@@ -1,6 +1,5 @@
 <?php
-
-namespace Just\Amp\Exceptions;
+namespace Cohensive\Amp\Exceptions;
 
 use RuntimeException;
 

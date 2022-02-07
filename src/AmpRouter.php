@@ -1,44 +1,28 @@
 <?php
-
-namespace Just\Amp\Laravel;
+namespace Cohensive\Amp;
 
 use Illuminate\Config\Repository;
 use Illuminate\Routing\Router;
-use Just\Amp\Exceptions\AmpRouteActionMustBeArray;
-use Just\Amp\Exceptions\AmpRouteNameMustBeDefined;
+use Cohensive\Amp\Exceptions\AmpRouteActionMustBeArray;
+use Cohensive\Amp\Exceptions\AmpRouteNameMustBeDefined;
 
 class AmpRouter
 {
-    /**
-     * @var \Illuminate\Routing\Router
-     */
-    private $router;
+    private Router $router;
 
-    /**
-     * @var array
-     */
-    private $config;
+    private Repository $config;
 
-    /**
-     * @param \Illuminate\Routing\Router    $router
-     * @param \Illuminate\Config\Repository $config
-     */
     public function __construct(Router $router, Repository $config)
     {
         $this->router = $router;
         $this->config = $config;
     }
 
-    /**
-     */
     public function registerMacros()
     {
         $router = $this->router;
-        $config = $this->config;
-
-        $router->macro('amp', function ($url, $action) use ($router, $config)
-        {
-            $prefixed = trim($config->get('amp.prefix', 'gm'), '/');
+        $router->macro('amp', function ($url, $action) {
+            $prefixed = trim($this->config->get('amp.prefix', 'amp'), '/');
             $url = trim($url, '/');
 
             $prefixed = sprintf('%s/%s', $prefixed, $url);
@@ -53,8 +37,8 @@ class AmpRouter
 
             $ampRouteName = $action['as'] . '.amp';
 
-            $router->get($url, array_merge($action, ['amp' => $ampRouteName]));
-            $router->get($prefixed, array_merge($action, ['as' => $ampRouteName]));
+            $this->router->get($url, array_merge($action, ['amp' => $ampRouteName]));
+            $this->router->get($prefixed, array_merge($action, ['as' => $ampRouteName]));
         });
     }
 }

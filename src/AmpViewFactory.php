@@ -1,47 +1,31 @@
 <?php
-
-namespace Just\Amp\Laravel;
+namespace Cohensive\Amp;
 
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Contracts\View\Factory as FactoryContract;
+use Illuminate\Contracts\View\View;
 use Illuminate\View\Engines\EngineResolver;
 use Illuminate\View\Factory;
 use Illuminate\View\ViewFinderInterface;
 
 class AmpViewFactory extends Factory implements FactoryContract
 {
-    /**
-     * @var string
-     */
-    protected $ampAffix;
+    protected string $ampAffix;
 
-    /**
-     * @var string
-     */
-    protected $ampBoolName;
+    protected string $ampBoolName;
 
-    /**
-     * @var bool
-     */
-    protected $ampFallback;
+    protected bool $ampFallback;
 
     /**
      * AmpViewFactory constructor.
-     *
-     * @param \Illuminate\View\Engines\EngineResolver $engines
-     * @param \Illuminate\View\ViewFinderInterface    $finder
-     * @param \Illuminate\Contracts\Events\Dispatcher $events
-     * @param string                                  $ampAffix
-     * @param string                                  $ampBoolName
-     * @param bool                                    $ampFallback
      */
     public function __construct(
         EngineResolver $engines,
         ViewFinderInterface $finder,
         Dispatcher $events,
-        $ampAffix,
-        $ampBoolName,
-        $ampFallback
+        string $ampAffix,
+        string $ampBoolName,
+        bool $ampFallback
     ) {
         $this->ampAffix = $ampAffix;
         $this->ampBoolName = $ampBoolName;
@@ -54,10 +38,8 @@ class AmpViewFactory extends Factory implements FactoryContract
      * @param string $view
      * @param array  $data
      * @param array  $mergeData
-     *
-     * @return \Illuminate\Contracts\View\View
      */
-    public function make($view, $data = [], $mergeData = [])
+    public function make($view, $data = [], $mergeData = []): View
     {
         $routeName = $this->getContainer()->make('router')->currentRouteName();
 

@@ -1,6 +1,5 @@
 <?php
-
-namespace Just\Amp\Laravel;
+namespace Cohensive\Amp;
 
 use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Routing\Router;
@@ -8,29 +7,16 @@ use Illuminate\Contracts\View\View;
 
 class AmpMatchComposer
 {
-    /**
-     * @var \Illuminate\Routing\Router
-     */
-    private $router;
+    private Router $router;
 
-    /**
-     * @var \Illuminate\Contracts\Routing\UrlGenerator
-     */
-    private $urlGenerator;
+    private UrlGenerator $urlGenerator;
 
-    /**
-     * @param \Illuminate\Routing\Router                 $router
-     * @param \Illuminate\Contracts\Routing\UrlGenerator $urlGenerator
-     */
     public function __construct(Router $router, UrlGenerator $urlGenerator)
     {
         $this->router = $router;
         $this->urlGenerator = $urlGenerator;
     }
 
-    /**
-     * @param \Illuminate\Contracts\View\View $view
-     */
     public function compose(View $view)
     {
         $currentRoute = $this->router->getCurrentRoute();

@@ -7,7 +7,7 @@ This package makes it easy to integrate [AMP](https://www.ampproject.org/) in yo
 You can install the package via composer:
 
 ``` bash
-composer require wearejust/laravel-amp
+composer require cohensive/laravel-amp
 ```
 
 Register the service provider in your app.php
@@ -16,11 +16,11 @@ Register the service provider in your app.php
 // app.php
 'providers' => [
     ...
-    Just\Amp\Laravel\AmpServiceProvider::class,
+    Cohensive\Amp\AmpServiceProvider::class,
 ],
 'aliases' => [
     ...
-    'AmpRouter' => Just\Amp\Laravel\AmpRouteFacade::class,
+    'AmpRouter' => Cohensive\Amp\AmpRouteFacade::class,
 ]
 ```
 
@@ -45,8 +45,10 @@ public function boot(Router $router)
 Route::amp('url-of-my-route', ['as' => 'my-route', 'uses' => 'PageController@text']);
 ```
 
-There well be two routes registered. One with '/url-of-my-route',  and one prefixed with the config value you specify in the config file such as `googleamp`. 
-The logic for both routes is the same, but the view that's being rendered for the amp route affixed the the config value you specify in the config file (view-affix).
+There well be two routes registered. One with '/url-of-my-route',  and one prefixed with the config value you specify in the config file such as `amp`: 'amp/url-of-my-route'.
+
+The logic for both routes is the same, but the view that's being rendered for the amp route affixed the the config value you specify in the config file (view_affix).
+
 In your view, include the ```amp::tag``` file. This will match the AMP route (if exists) and put an link to the amp content in your HTML.
 
 ## Changelog

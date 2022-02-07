@@ -1,6 +1,5 @@
 <?php
-
-namespace Just\Amp\Laravel;
+namespace Cohensive\Amp;
 
 use Illuminate\Support\Facades\Facade;
 
