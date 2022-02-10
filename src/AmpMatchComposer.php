@@ -1,44 +1,32 @@
 <?php
 namespace Cohensive\Amp;
 
-use Illuminate\Contracts\Routing\UrlGenerator;
-use Illuminate\Routing\Router;
 use Illuminate\Contracts\View\View;
+use Illuminate\Config\Repository;
 
 class AmpMatchComposer
 {
-    private Router $router;
+    private Amp $amp;
 
-    private UrlGenerator $urlGenerator;
+    private Repository $config;
 
-    public function __construct(Router $router, UrlGenerator $urlGenerator)
+    public function __construct(Amp $amp, Repository $config)
     {
-        $this->router = $router;
-        $this->urlGenerator = $urlGenerator;
+        $this->amp = $amp;
+        $this->config = $config;
     }
 
     public function compose(View $view)
     {
-        $currentRoute = $this->router->getCurrentRoute();
-
-        if (!$currentRoute) {
-            $view->with('hasAmpUrl', false);
-            return;
-        }
-
-        $routeName = $currentRoute->getName();
-        $matches = preg_match('/\.amp$/', $routeName);
-
-        if ($matches === 0) {
-            $action = $currentRoute->getAction();
-
-            if (isset($action['amp'])) {
-                $uri = $this->urlGenerator->route($action['amp'], $currentRoute->parameters());
-
-                $view->with('ampUrl', $uri);
+        if ($this->amp->isAmp()) {
+            $url = $this->amp->url();
+            if ($url) {
+                $view->with($this->config->get('amp.url'), $url);
             }
+            $view->with($this->config->get('amp.view_bool_name'), !!$url);
         }
 
-        $view->with('hasAmpUrl', isset($uri));
+        $view->with($this->config->get('amp.url'), null);
+        $view->with($this->config->get('amp.view_bool_name'), false);
     }
 }
