@@ -21,8 +21,9 @@ class AmpRouter
     public function registerMacros()
     {
         $router = $this->router;
-        $router->macro('amp', function ($url, $action) {
-            $prefixed = trim($this->config->get('amp.prefix', 'amp'), '/');
+        $config = $this->config;
+        $router->macro('amp', function ($url, $action) use ($router, $config) {
+            $prefixed = trim($config->get('amp.prefix', 'amp'), '/');
             $url = trim($url, '/');
 
             $prefixed = sprintf('%s/%s', $prefixed, $url);
@@ -37,8 +38,8 @@ class AmpRouter
 
             $ampRouteName = $action['as'] . '.amp';
 
-            $this->router->get($url, array_merge($action, ['amp' => $ampRouteName]));
-            $this->router->get($prefixed, array_merge($action, ['as' => $ampRouteName]));
+            $router->get($url, array_merge($action, ['amp' => $ampRouteName]));
+            $router->get($prefixed, array_merge($action, ['as' => $ampRouteName]));
         });
     }
 }
