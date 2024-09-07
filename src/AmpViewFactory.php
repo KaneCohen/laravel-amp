@@ -43,7 +43,7 @@ class AmpViewFactory extends Factory implements FactoryContract
     {
         $routeName = $this->getContainer()->make('router')->currentRouteName();
 
-        if ($routename && preg_match('/\.amp$/', $routeName)) {
+        if ($routeName && preg_match('/\.amp$/', $routeName)) {
             if (isset($this->ampAffix)) {
                 if (!$this->ampFallback) {
                     $view .= $this->ampAffix;
